@@ -1,5 +1,6 @@
 package id.sch.smktelkom_mlg.GoogleMaps;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,69 +11,76 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback{
 
-    static final CameraPosition NEWYORK = CameraPosition.builder()
-            .target(new LatLng(40.784, -73.9857))
-            .zoom(21)
+
+    static final CameraPosition SEATTLE = CameraPosition.builder()
+            .target(new LatLng(47.6204, -122.2491))
+            .zoom(10)
             .bearing(0)
             .tilt(45)
-             .build();
-    static final CameraPosition SEATTLE = CameraPosition.builder()
-             .target(new LatLng(47.6204, -122.3491))
-             .zoom(17)
-             .bearing(0)
-             .tilt(45)
-             .build();
-    static final CameraPosition DUBLIN = CameraPosition.builder()
-             .target(new LatLng(53.3478, -6.2597))
-             .zoom(17)
-             .bearing(90)
-             .tilt(45)
-             .build();
-    static final CameraPosition TOKYO = CameraPosition.builder()
-             .target(new LatLng(35.6895, 139.6917))
-             .zoom(17)
-             .bearing(90)
-             .tilt(45)
-             .build();
+            .build();
 
     GoogleMap m_map;
     boolean mapReady = false;
+
+     MarkerOptions renton;
+     MarkerOptions kirkland;
+     MarkerOptions everett;
+     MarkerOptions lynnwood;
+     MarkerOptions montlake;
+     MarkerOptions kent;
+     MarkerOptions showare;
+
+    @Override
+     public Resources getResources() {
+                return super.getResources();
+            }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button btnSeattle = (Button) findViewById(R.id.btnSeattle);
-        btnSeattle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mapReady)
-                    m_map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-            }
-        });
 
-        Button btnDublin = (Button) findViewById(R.id.btnDublin);
-        btnDublin.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 if (mapReady)
-                     m_map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-             }
-         });
+        renton = new MarkerOptions()
+                .position(new LatLng(47.489805, -122.120502))
+                .title("Renton")
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
 
-        Button btnTokyo = (Button) findViewById(R.id.btnTokyo);
-        btnTokyo.setOnClickListener(new View.OnClickListener() {
-            @Override
-             public void onClick(View v) {
-                 if (mapReady)
-                     flyTo(TOKYO);
-             }
-         });
+        kirkland = new MarkerOptions()
+                .position(new LatLng(47.7301986, -122.1768858))
+                .title("Kirkland")
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
+
+        everett = new MarkerOptions()
+                .position(new LatLng(47.978748, -122.202001))
+                .title("Everett")
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
+
+        lynnwood = new MarkerOptions()
+                .position(new LatLng(47.819533, -122.32288))
+                .title("Lynnwood")
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
+
+        montlake = new MarkerOptions()
+                .position(new LatLng(47.7973733, -122.3281771))
+                .title("Montlake Terrace")
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
+
+        kent = new MarkerOptions()
+                .position(new LatLng(47.385938, -122.258212))
+                .title("Kent Valley")
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
+
+        showare = new MarkerOptions()
+                .position(new LatLng(47.38702, -122.23986))
+                .title("Showare Center")
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -82,13 +90,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap map) {
         mapReady = true;
-        m_map = map;
-        m_map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-        flyTo(NEWYORK);
+        m_map = map; m_map.addMarker(renton);
+        m_map.addMarker(kirkland);
+        m_map.addMarker(everett);
+        m_map.addMarker(lynnwood);
+        m_map.addMarker(montlake);
+        m_map.addMarker(kent);
+        m_map.addMarker(showare);
+        flyTo(SEATTLE);
     }
 
     private void flyTo(CameraPosition target) {
-        m_map.animateCamera(CameraUpdateFactory.newCameraPosition(target), 10000, null);
+        m_map.moveCamera(CameraUpdateFactory.newCameraPosition(target));
     }
 
 
